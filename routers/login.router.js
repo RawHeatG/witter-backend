@@ -10,24 +10,21 @@ const generateToken = (payload, expiry) => {
 }
 
 router.route("/")
-    .post(async (req,res) => {
+    .post( async (req,res) => {
         try{
             const { user } = req.body;
-            const { name, username, password } = user;
             console.log(user)
-            const encryptedPassword = await bcrypt.hash(password, 10)
-            const token = generateToken(username, "24h");
-            const NewUser = new User({...user, password: encryptedPassword});
-            console.log(NewUser)
-            const savedUser = await NewUser.save();
-            console.log(savedUser);
-
-            res.status(200).json({success: true, data:{name: name, username: username, userId: savedUser._id, token: token}});
+            const { username, password } = user;
+            const userInDB = await User.findOne({username})
+            if(bcrypt.compare(password, userInDB.password)){
+                const token = generateToken({username}, "24h");
+                return res.status(200).json({success: true, data:{name: userInDB.name, username: userInDB.username, userId: userInDB._id, token: token}})
+            }
+            res.status(401).json({success: false, data:{error: "Wrong credentials"}})
         }catch(err){
             console.log(err)
             res.status(500).json({success: false, data:{error: err}});
         }
-    
-})
+    })
 
 module.exports = router;
