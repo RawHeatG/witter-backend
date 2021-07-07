@@ -25,7 +25,7 @@ router.route("/")
             res.status(200).json({success: true, data:{name: name, username: username, userId: savedUser._id, token: token}});
         }catch(err){
             console.log(err)
-            res.status(500).json({success: false, data:{error: err}});
+            res.status(500).json({success: false, error: err});
         }
     
 })

@@ -23,7 +23,7 @@ router.route("/")
             res.status(401).json({success: false, data:{error: "Wrong credentials"}})
         }catch(err){
             console.log(err)
-            res.status(500).json({success: false, data:{error: err}});
+            res.status(500).json({success: false, error: err});
         }
     })
 
