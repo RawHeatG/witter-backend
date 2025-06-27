@@ -2,6 +2,19 @@ const express = require("express");
 const router = express.Router();
 const { Tweet } = require("../models/tweet.model");
 
+router.route("/")
+    .get(async (req,res) => {
+        try{
+            const allTweets = await Tweet.find({}).populate("user");
+            console.log(allTweets)
+
+            res.status(200).json({ success: true, data: allTweets});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({ success: false, error: err})
+        }
+    })
+
 router.route("/:userId")
     .get(async (req,res) => {
         try{
