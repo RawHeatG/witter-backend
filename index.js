@@ -1,6 +1,7 @@
 const express = require('express');
 var bodyParser = require('body-parser');
 const cors = require('cors');
+const port = process.env.PORT || 10000;
 
 const app = express();
 
@@ -29,6 +30,6 @@ app.get('/', (req, res) => {
 //DO NOT MOVE, needs to be at the end to catch all routes that are not being handled by server
 app.use(routeNotFound);
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log('server started');
 });
